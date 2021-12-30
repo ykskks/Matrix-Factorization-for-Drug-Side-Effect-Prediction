@@ -1,0 +1,15 @@
+.devcontainer
+.vscode
+.ipynb_checkpoints
+__pycache__
+.env
+/models
+/logs
+run.sh
+*.pickle
+.DS_store
+.DS_Store
+result/_*
+src/data/_*
+*.png
+_*.py
