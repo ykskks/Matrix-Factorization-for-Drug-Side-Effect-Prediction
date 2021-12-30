@@ -1,4 +1,4 @@
-Note: Due to the KEGG api update, the created dataset will slightly differ from the original dataset used in the paper. However, we confirmed that this change did not affect the result and discussion. To reproduce the exact same result, please use the original dataset under ./data.
+Note: Due to the KEGG api update, the created dataset will slightly differ from the original dataset used in the paper. However, we confirmed that this change did not affect the result and discussion. To reproduce the exact same result, please use the original dataset under `data/`.
 
 # Setup
 ```
@@ -6,7 +6,7 @@ pip install -r requirements.txt
 ```
 
 # Data
-Download FAERS REAC & DRUG tables (2004Q1-2019Q2) under ./data/ directory
+Download FAERS REAC & DRUG tables (2004Q1-2019Q2) under `data/`
 
 # Run
 ```
