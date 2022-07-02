@@ -32,7 +32,7 @@ if __name__ == "__main__":
         data_train=data_train,
         data_whole=data_whole,
         model_class=LogisticMF,
-        loss_function=LogisticMFLoss,
+        loss_function=LogisticMFLoss(),
         is_loss_extended=False,
         scorer=scorer,
         param_grid=param_grid,

@@ -28,7 +28,7 @@ if __name__ == "__main__":
         data_train=data_train,
         data_whole=data_whole,
         model_class=MF,
-        loss_function=MFLoss,
+        loss_function=MFLoss(),
         is_loss_extended=False,
         scorer=scorer,
         param_grid=param_grid,

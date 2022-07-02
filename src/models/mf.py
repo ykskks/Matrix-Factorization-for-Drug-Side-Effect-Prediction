@@ -50,7 +50,7 @@ if __name__ == "__main__":
         model_id=model_id,
         data=data,
         model_class=MF,
-        loss_function=MFLoss,
+        loss_function=MFLoss(),
         is_loss_extended=False,
         scorer=scorer,
         param_grid=param_grid,

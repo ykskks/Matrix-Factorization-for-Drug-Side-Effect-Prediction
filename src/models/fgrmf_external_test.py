@@ -31,7 +31,7 @@ if __name__ == "__main__":
         data_train=data_train,
         data_whole=data_whole,
         model_class=FGRMF,
-        loss_function=FGRMFLoss,
+        loss_function=FGRMFLoss(),
         is_loss_extended=False,
         scorer=scorer,
         param_grid=param_grid,
