@@ -29,7 +29,7 @@ if __name__ == "__main__":
         model_id=model_id,
         data=data,
         model_class=FGRMF,
-        loss_function=FGRMFLoss,
+        loss_function=FGRMFLoss(),
         is_loss_extended=True,
         scorer=scorer,
         param_grid=param_grid,
