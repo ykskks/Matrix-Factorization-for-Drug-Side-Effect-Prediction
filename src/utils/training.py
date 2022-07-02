@@ -13,8 +13,6 @@ from sklearn.svm import SVC
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
 
-from utils import EarlyStoppingNB as EarlyStopping
-
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
@@ -29,6 +27,71 @@ def add_weight_decay(net, embedding_l2):
         {"params": embed, "weight_decay": embedding_l2},
         {"params": bias, "weight_decay": 0},
     ]
+
+
+class EarlyStopping:
+    def __init__(
+        self,
+        model_checkpoint_path,
+        mode="min",
+        patience=5,
+        min_delta=0,
+        percentage=False,
+    ):
+        self.model_checkpoint_path = model_checkpoint_path
+        self.mode = mode
+        self.patience = patience
+        self.min_delta = min_delta
+        self.prev_best = None
+        self.best = None
+        self.num_bad_epochs = 0
+        self.is_better = None
+        self._init_is_better(mode, min_delta, percentage)
+
+        if patience == 0:
+            self.is_better = lambda a, b: True
+            self.step = lambda a: False  # type: ignore
+
+    def step(self, metric, model):
+        if self.best is None:
+            self.best = metric
+            self._save_checkpoint(metric, model)
+            return False
+
+        if self.is_better(metric, self.best):  # type: ignore
+            self.num_bad_epochs = 0
+            self.prev_best = self.best
+            self.best = metric
+            self._save_checkpoint(metric, model)
+        else:
+            self.num_bad_epochs += 1
+            print(f"Early stop count is {self.num_bad_epochs}")
+
+        if self.num_bad_epochs >= self.patience:
+            return True
+
+        return False
+
+    def _init_is_better(self, mode, min_delta, percentage):
+        if mode not in {"min", "max"}:
+            raise ValueError("mode " + mode + " is unknown!")
+        if not percentage:
+            if mode == "min":
+                self.is_better = lambda a, best: a < best - min_delta
+            if mode == "max":
+                self.is_better = lambda a, best: a > best + min_delta
+        else:
+            if mode == "min":
+                self.is_better = lambda a, best: a < best - (best * min_delta / 100)
+            if mode == "max":
+                self.is_better = lambda a, best: a > best + (best * min_delta / 100)
+
+    def _save_checkpoint(self, metric, model):
+        if self.prev_best is not None:
+            print(
+                f"Metric improved. ({self.prev_best:.6f} --> {self.best:.6f}).  Saving model ..."
+            )
+        torch.save(model.state_dict(), self.model_checkpoint_path)
 
 
 def _get_xy_from_loader(data, row_indices, column_indices, adr_index):
