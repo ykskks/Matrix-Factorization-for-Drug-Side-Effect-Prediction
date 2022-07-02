@@ -3,8 +3,8 @@
 .ipynb_checkpoints
 __pycache__
 .env
-/models
-/logs
+models/*.pt
+logs
 run.sh
 *.pickle
 .DS_store
