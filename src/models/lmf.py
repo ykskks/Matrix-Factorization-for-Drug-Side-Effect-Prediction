@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch import Tensor
 
 from utils.base import BaseLoss, BaseModel
@@ -22,7 +21,7 @@ class LogisticMF(BaseModel):
     def forward(self, user: Tensor, item: Tensor) -> Tensor:
         out = self.user_biases(user) + self.item_biases(item)
         out += (self.user_factors(user) * self.item_factors(item)).sum(1, keepdim=True)
-        return F.sigmoid(out.squeeze())
+        return torch.sigmoid(out.squeeze())
 
     def loss_ingredients(
         self, user: Tensor, item: Tensor, **kwargs
