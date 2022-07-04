@@ -1,6 +1,7 @@
 import inspect
 import os
 import random
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -249,9 +250,9 @@ def run_sklearn_external_test(
     return ap_dicts
 
 
-def save_results(model_id, ap_dicts):
+def save_results(model_id, ap_dicts, result_dir="./result"):
     res_df = pd.DataFrame(ap_dicts)
     res_df["all"] = res_df.mean(axis=1)
     res_df.loc["mean", :] = res_df.mean(axis=0)  # type: ignore
     res_df.loc["std", :] = res_df.std(axis=0)  # type: ignore
-    res_df.to_csv(f"./result/{model_id}.csv")
+    res_df.to_csv(Path(result_dir) / f"{model_id}.csv")
